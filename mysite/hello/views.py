@@ -13,13 +13,7 @@ def cookie(request):
     coursera_val = request.COOKIES.get('coursera', None)
     sakai_val = request.COOKIES.get('sakai', None)
 
-    resp = HttpResponse(
-        f"""
-        csrftoken is given.\n\r\n\r
-        coursera value is {str(coursera_val)}.\n\r\n\r
-        sakai value is {str(sakai_val)}.\n\r\n\r
-        """
-    )
+    resp = HttpResponse()
 
     if coursera_val:
         resp.set_cookie('coursera', int(coursera_val) + 1)   # No expired date = until browser close
@@ -27,6 +21,14 @@ def cookie(request):
         resp.set_cookie('coursera', 1)                       # No expired date = until browser close
 
     resp.set_cookie('sakai', 42, max_age=1000)   # seconds until expire
+
+    resp = HttpResponse(
+        f"""
+            csrftoken is given.\n\r\n\r
+            coursera value is {str(coursera_val)}.\n\r\n\r
+            sakai value is {str(sakai_val)}.\n\r\n\r
+            """
+    )
     return resp
 
 
