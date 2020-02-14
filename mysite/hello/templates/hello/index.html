@@ -1,0 +1,8 @@
+{% extends 'hello/base.html' %}
+
+{% block content %}
+<ul>
+    <li><a href="{% url 'hello:cookie' %}">If browser give a cookie...</a></li>
+    <li><a href="{% url 'hello:visit_counter' %}">Visit Counter</a></li>
+</ul>
+{% endblock content %}
