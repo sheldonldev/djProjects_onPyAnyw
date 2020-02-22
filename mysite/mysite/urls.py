@@ -26,12 +26,16 @@ urlpatterns = [
     # admin
     path('admin/', admin.site.urls),
 
+    # login
+    path('accounts/', include('django.contrib.auth.urls')),
+
     # home
     path('', TemplateView.as_view(template_name='home/main.html')),
 
     # apps
     path('polls/', include('polls.urls')),
     path('hello/', include('hello.urls')),
+    path('autos/', include('autos.urls')),
 ]
 
 # serve static HTML

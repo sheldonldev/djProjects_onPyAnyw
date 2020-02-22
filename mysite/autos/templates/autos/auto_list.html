@@ -1,0 +1,45 @@
+{% extends 'autos/base.html' %}
+
+{% block content %}
+    <h1>Users Detail List</h1>
+
+    {% if auto_list  %}
+        <table style="width:100%">
+            <thead>
+                <tr>
+                    <th>Nick Name</th>
+                    <th>User Information</th>
+                    <th>Mileage</th>
+                    <th>Comments</th>
+                    <th>Update</th>
+                    <th>Delete</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for auto in auto_list %}
+                <tr>
+                    <td>{{ auto.nickname }}</td>
+                    <td>{{ auto.user }}</td>
+                    <td>{{ auto.mileage }} miles</td>
+                    <td>{{ auto.comments }}</td>
+                    <td><a href="{% url 'autos:auto_update' auto.id %}"><button type="button" class="btn btn-primary btn-sm">Update</button></a></td>
+                    <td><a href="{% url 'autos:auto_delete' auto.id %}"><button type="button" class="btn btn-danger btn-sm">Delete</button></a></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>There is no user detail in the library.</p>
+    {% endif %}
+
+    <br>
+    {% if make_count > 0 %}
+        <p>
+            <a href="{% url 'autos:auto_create' %}">Add/Update Detail</a> |
+            <a href="{% url 'autos:make_list' %}">View users</a> ({{ make_count }})
+        </p>
+    {% else %}
+        <p>Please add a user before you add detail. <a href="{% url 'autos:make_create' %}">Add a user</a></p>
+    {% endif %}
+
+{% endblock content %}

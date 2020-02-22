@@ -1,13 +1,11 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Home</title>
-</head>
-<body>
+{% extends 'home/base.html' %}
+
+{% block content %}
+
     <ul>
         <li><p><a href="{% url 'polls:index' %}">A Polls Application</a></p></li>
         <li><p><a href="{% url 'hello:index' %}">Hello Playground</a></p></li>
+        <li><p><a href="{% url 'autos:index' %}">Autos CRUD</a></p></li>
     </ul>
-</body>
-</html>
+
+{% endblock content %}

@@ -1,0 +1,35 @@
+{% extends 'autos/base.html' %}
+
+{% block content %}
+    <h1>Users List</h1>
+
+    {% if make_list %}
+        <table style="width:100%">
+            <thead>
+                <tr>
+                    <th>First Name</th>
+                    <th>Surname</th>
+                    <th>Email</th>
+                    <th>Update</th>
+                    <th>Delete</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for make in make_list %}
+                <tr>
+                    <td>{{ make.first_name }}</td>
+                    <td>{{ make.surname }}</td>
+                    <td>{{ make.email }}</td>
+                    <td><a href="{% url 'autos:make_update' make.id %}"><button type="button" class="btn btn-primary btn-sm">Update</button></a></td>
+                    <td><a href="{% url 'autos:make_delete' make.id %}"><button type="button" class="btn btn-danger btn-sm">Delete</button></a></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>There is no user in the library. <a href="{% url 'autos:make_create' %}">Add a user</a></p>
+    {% endif %}
+    <br>
+    <p><a href="{% url 'autos:auto_create' %}">Add a user</a> | <a href="{% url 'autos:index' %}">Back to index</a></p>
+
+{% endblock content %}
