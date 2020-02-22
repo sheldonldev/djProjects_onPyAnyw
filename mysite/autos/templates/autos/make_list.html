@@ -29,10 +29,11 @@
     {% else %}
         <p>There is no user in the library. <a href="{% url 'autos:make_create' %}">Add a user</a></p>
     {% endif %}
+
     <br>
     <p>
         <a href="{% url 'autos:make_create' %}">Add a user</a> |
-        <a href="{% url 'autos:auto_create' %}">Add user detail</a> |
-        <a href="{% url 'autos:index' %}">Back to index</a></p>
+        <a href="{% url 'autos:index' %}">Users detail list</a>
+    </p>
 
 {% endblock content %}
