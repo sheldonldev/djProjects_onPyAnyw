@@ -35,8 +35,8 @@
     <br>
     {% if make_count > 0 %}
         <p>
-            <a href="{% url 'autos:auto_create' %}">Add/Update Detail</a> |
-            <a href="{% url 'autos:make_list' %}">View users</a> ({{ make_count }})
+            <a href="{% url 'autos:auto_create' %}">Add User Detail</a> |
+            <a href="{% url 'autos:make_list' %}">Users list</a> ({{ make_count }})
         </p>
     {% else %}
         <p>Please add a user before you add detail. <a href="{% url 'autos:make_create' %}">Add a user</a></p>
