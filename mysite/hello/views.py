@@ -24,10 +24,10 @@ def cookie(request):
 
     resp = HttpResponse(
         f"""
-            csrftoken is given.\n\r\n\r
-            coursera value is {str(coursera_val)}.\n\r\n\r
-            sakai value is {str(sakai_val)}.\n\r\n\r
-            """
+        csrftoken is given.\n\r\n\r
+        coursera value is {str(coursera_val)}.\n\r\n\r
+        sakai value is {str(sakai_val)}.\n\r\n\r
+        """
     )
     return resp
 

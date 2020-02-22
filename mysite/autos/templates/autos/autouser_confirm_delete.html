@@ -1,0 +1,21 @@
+{% extends 'autos/base.html' %}
+
+{% block content %}
+    <h1>Delete User Detail</h1>
+
+    <p>Are you sure you want to delete the detail?</p>
+    <ul>
+        <li>name: {{ autouser.user.first_name }} {{ autouser.user.surname }}</li>
+        <li>email: {{ autouser.user.email }}</li>
+        <li>nickname: {{ autouser.nickname }}</li>
+        <li>mileage: {{ autouser.mileage }}</li>
+        <li>comments: {{ autouser.comments }}</li>
+    </ul>
+
+    <form action="" method="POST">
+        {% csrf_token %}
+        <input type="submit" value="Yes, delete.">
+        <input type="submit" onclick="window.location='{% url 'autos:index' %}' ; return false;" value="Cancel">
+    </form>
+
+{% endblock content %}

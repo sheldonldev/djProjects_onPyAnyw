@@ -1,0 +1,15 @@
+{% extends 'autos/base.html' %}
+
+{% block content %}
+    <form action="" method="POST">
+        {% csrf_token %}
+
+        <table>
+            {{ form.as_table }}
+        </table>
+
+        <input type="submit" value="Submit">
+        <input type="submit" onclick="window.location='{% url 'autos:index' %}' ; return false;" value="Cancel">
+    </form>
+
+{% endblock content %}
