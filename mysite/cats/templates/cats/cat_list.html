@@ -1,0 +1,50 @@
+{% extends "cats/base.html" %}
+
+{% block content %}
+    <h1>Cats List</h1>
+
+    <!--
+    if bread_count > 0:
+        if cat_list:
+            for cat in cat_list:
+                display(cat)
+        display("(cat_count) cat in the Cats List")
+        display("create new cat" => cat_create, "view breed list (breed_count)" => breed_list)
+    else:
+        display("Pleas create breeds before create cats." => breed_create)
+
+    -->
+    {% if breed_count > 0 %}
+
+        {% if cat_list %}
+            <table style="width: 100%">
+                <thead>
+                    <tr>
+                        <th>Breed Name</th><th>Cat Name</th><th>Weight</th><th>Foods</th>
+                        <th>Update</th><th>Delete</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for cat in cat_list %}
+                    <tr>
+                        <td>{{ cat.breed }}</td><td>{{ cat.cat_name }}</td><td>{{ cat.weight }}</td><td>{{ cat.foods }}</td>
+                        <td><a href="{% url 'cats:cat_update' cat.id %}"><button type="button" class="btn btn-sm">Update</button></a></td>
+                        <td><a href="{% url 'cats:cat_delete' cat.id %}"><button type="button" class="btn btn-danger btn-sm">Delete</button></a></td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% endif %}
+        <br>
+        <p>{{ cat_count }} cat{{ cat_count|pluralize }} in the <i>Cats List</i>.</p>
+        <p>
+            <a href="{% url 'cats:cat_create' %}">Create New Cat</a> |
+            <a href="{% url 'cats:breed_list' %}">View Breeds List ({{ breed_count }})</a>
+        </p>
+
+    {% else %}
+        <p>There is no cat or breed in the library! Please create breeds before create cats.</p>
+        <p><a href="{% url 'cats:breed_create' %}">Create Breed</a></p>
+    {% endif %}
+
+{% endblock content %}
