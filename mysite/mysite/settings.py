@@ -39,9 +39,10 @@ INSTALLED_APPS = [
     'hello.apps.HelloConfig',
     'autos.apps.AutosConfig',
     'cats.apps.CatsConfig',
+    'unesco.apps.UnescoConfig',
 
-    # framework
-    ''
+    # tools
+    'django_extensions',
 
     # settings
     'django.contrib.admin',
