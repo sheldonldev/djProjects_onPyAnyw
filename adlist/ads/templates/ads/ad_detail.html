@@ -1,0 +1,21 @@
+{% extends 'home/base_menu.html' %}
+
+{% load humanize %}
+
+{% block content %}
+    <span style="float: end;">
+        (created at: {{ ad.created_at|naturaltime }} | updated at: {{ ad.updated_at|naturaltime }})
+        {% if ad.owner == user %}
+            <a href="{% url 'ads:update' ad.id %}"><i class="fa fa-pencil"></i></a>
+            <a href="{% url 'ads:delete' ad.id %}"><i class="fa fa-trash"></i></a>
+        {% else %}
+            owned by <i>{{ ad.owner }}</i>
+        {% endif %}
+    </span>
+
+    <h1>{{ ad.title }}</h1>
+    <p>{{ ad.price }}</p>
+    <p>{{ ad.text }}</p>
+
+{#    <p><a href="{% url 'ads:index' %}">All ads</a></p>#}
+{% endblock content %}

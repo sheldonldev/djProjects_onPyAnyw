@@ -1,0 +1,22 @@
+{% extends 'base_bootstrap.html' %}
+
+{% load humanize %}
+
+{% block content %}
+    <h1>Delete Ad</h1>
+
+    <p>Are you sure you want to delete the ad?</p>
+    <ul>
+        <li>Title: {{ ad.title }}</li>
+        <li>Price: {{ ad.price }}</li>
+        <li>Text: {{ ad.text }}</li>
+    </ul>
+    <p>(created at: {{ ad.created_at|naturaltime }} | updated at: {{ ad.updated_at|naturaltime }})</p>
+
+    <form action="" method="post">
+        {% csrf_token %}
+        <input type="submit" value="Yes, delete.">
+        <input type="submit" value="Cancel" onclick="window.location.href='{% url 'ads:index' %}'; return false">
+    </form>
+
+{% endblock content %}
