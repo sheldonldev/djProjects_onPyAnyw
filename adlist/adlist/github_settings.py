@@ -27,10 +27,10 @@
 # Then copy the client_key and secret to this file
 
 
-# My local
-SOCIAL_AUTH_GITHUB_KEY = 'e18d77f2a18fca2fb1ce'    # read above and setting github, copy from github
-SOCIAL_AUTH_GITHUB_SECRET = '7ce99885d987e293930fce93ad5d731c9a033370'    # copy from github
+# # My local
+# SOCIAL_AUTH_GITHUB_KEY = 'e18d77f2a18fca2fb1ce'    # read above and setting github, copy from github
+# SOCIAL_AUTH_GITHUB_SECRET = '7ce99885d987e293930fce93ad5d731c9a033370'    # copy from github
 
-# # My PythonAnywhere
-# SOCIAL_AUTH_GITHUB_KEY = 'c53a3b9e39a55a8e459f'
-# SOCIAL_AUTH_GITHUB_SECRET = '0a121d649b17afcf3894ef3b03c68ad0a9cba2a9'
+# My PythonAnywhere
+SOCIAL_AUTH_GITHUB_KEY = 'c53a3b9e39a55a8e459f'
+SOCIAL_AUTH_GITHUB_SECRET = '0a121d649b17afcf3894ef3b03c68ad0a9cba2a9'
