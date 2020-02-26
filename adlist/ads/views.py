@@ -3,10 +3,13 @@ from django.views import View
 from django.http import HttpResponse
 from django.urls import reverse_lazy, reverse
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.db.models import Q
+from django.contrib.humanize.templatetags.humanize import naturaltime
 
 from .owner import OwnerListView, OwnerDetailView, OwnerDeleteView
 from .form import CreateForm, CommentForm
 from .models import Ad, Comment, Favorite
+from .utils import dump_queries
 
 
 class AdListView(OwnerListView):
@@ -14,16 +17,41 @@ class AdListView(OwnerListView):
     template_name = 'ads/ad_list.html'
 
     def get(self, request):
-        ad_list = Ad.objects.all()
+        # ad_list = Ad.objects.all().order_by('-updated_at')
+
         favorites = list()
         if request.user.is_authenticated:
             # rows = [{'id': 2}, {'id': 4} ... ]  (A list of rows)
             rows = request.user.favorite_ads.values('id')
             favorites = [row['id'] for row in rows]
+
+        str_val = request.GET.get("search", False)
+        if str_val:
+            # # Simple title-only search
+            # objects = Post.objects.filter(title__contains=str_val).select_related().order_by('-updated_at')[:10]
+
+            # Multi-field search
+            query = Q(title__contains=str_val)
+            query.add(Q(text__contains=str_val), Q.OR)
+            ad_list = Ad.objects.filter(query).select_related().order_by('-updated_at')[:]
+        else:
+            # try both versions with > 4 posts and watch the queries that happen
+            ad_list = Ad.objects.all().order_by('-updated_at')[:]
+            # objects = Ad.objects.select_related().all().order_by('-updated_at')[:]
+        for ad in ad_list:
+            ad.natural_created = naturaltime(ad.created_at)
+            ad.natural_updated = naturaltime(ad.updated_at)
+            if len(ad.text) > 50:
+                ad.text_preview = ad.text[:50] + '...'
+            else:
+                ad.text_preview = ad.text
+
         ctx = {
             "ad_list": ad_list,
             "favorites": favorites,
+            "search": str_val,
         }
+        # dump_queries()    # check SQL queries
         return render(request, self.template_name, ctx)
 
 

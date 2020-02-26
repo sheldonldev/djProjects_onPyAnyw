@@ -1,43 +1,63 @@
 {% extends 'home/base_menu.html' %}
 
 {% block content %}
-    <h1>Ads</h1>
+
+    <div style="float:right">
+        <!-- https://www.w3schools.com/howto/howto_css_search_button.asp -->
+        <form>
+            <label>
+                <input type="text" placeholder="Search.." name="search" {% if search %} value="{{ search }}" {% endif %}>
+            </label>
+            <button type="submit"><i class="fa fa-search"></i></button>
+            <a href="{% url 'ads:index' %}"><i class="fa fa-undo"></i></a>
+        </form>
+    </div>
+
+    <h1>Ads List</h1>
 
     {% if ad_list %}
         <ul>
         {% for ad in ad_list %}
-            <li><p>
-                <a href="{% url 'ads:detail' ad.id %}">{{ ad.title }}</a>
-                {% if ad.owner == user %}
-                    (
-                    <a href="{% url 'ads:update' ad.id %}">Edit</a> |
-                    <a href="{% url 'ads:delete' ad.id %}">Delete</a>
-                    )
-                {% endif %}
+            <li>
+                <p>
+                    <a href="{% url 'ads:detail' ad.id %}">{{ ad.title }}</a>
 
-                {% if user.is_authenticated %}
-                    <!-- Two hrefs with two stacked icons each - one showing and one hidden -->
-                    <a href="#" onclick="favAd('{% url 'ads:ad_unfavorite' ad.id %}', {{ ad.id }});return false;"
-                        {% if ad.id not in favorites %} style="display: none;" {% endif %}
-                        id="favorite_star_{{ad.id}}"
-                    >
-                        <span class="fa-stack" style="vertical-align: middle;">
-                            <i class="fa fa-star fa-stack-1x" style="color: orange;"></i>
-                            <i class="fa fa-star-o fa-stack-1x"></i>
-                        </span>
-                    </a>
-                    <!-- the second href -->
-                    <a href="#" onclick="favAd('{% url 'ads:ad_favorite' ad.id %}', {{ ad.id }} );return false;"
-                        {% if ad.id in favorites %} style="display: none;" {% endif %}
-                        id="unfavorite_star_{{ad.id}}"
-                    >
-                        <span class="fa-stack" style="vertical-align: middle;">
-                            <i class="fa fa-star fa-stack-1x" style="display: none; color: orange;"></i>
-                            <i class="fa fa-star-o fa-stack-1x"></i>
-                        </span>
-                    </a>
-                {% endif %}
-            </p></li>
+                    {% if user.is_authenticated %}
+                        <!-- Two hrefs with two stacked icons each - one showing and one hidden -->
+                        <a href="#" onclick="favAd('{% url 'ads:ad_unfavorite' ad.id %}', {{ ad.id }});return false;"
+                            {% if ad.id not in favorites %} style="display: none;" {% endif %}
+                            id="favorite_star_{{ad.id}}"
+                        >
+                            <span class="fa-stack" style="vertical-align: middle;">
+                                <i class="fa fa-star fa-stack-1x" style="color: orange;"></i>
+                                <i class="fa fa-star-o fa-stack-1x"></i>
+                            </span>
+                        </a>
+                        <!-- the second href -->
+                        <a href="#" onclick="favAd('{% url 'ads:ad_favorite' ad.id %}', {{ ad.id }} );return false;"
+                            {% if ad.id in favorites %} style="display: none;" {% endif %}
+                            id="unfavorite_star_{{ad.id}}"
+                        >
+                            <span class="fa-stack" style="vertical-align: middle;">
+                                <i class="fa fa-star fa-stack-1x" style="display: none; color: orange;"></i>
+                                <i class="fa fa-star-o fa-stack-1x"></i>
+                            </span>
+                        </a>
+                    {% endif %}
+                </p>
+                <p class="small">{{ ad.text_preview }}</p>
+                <p class="small text-muted">
+                    created <i>{{ ad.created_at }}</i> |
+                    updated <i>{{ ad.natural_updated }}</i> |
+                    {% if ad.owner == user %}
+                        by <i>me</i> |
+                        <a href="{% url 'ads:update' ad.id %}"><i class="fa fa-pencil"></i></a> |
+                        <a href="{% url 'ads:delete' ad.id %}"><i class="fa fa-trash"></i></a>
+                    {% else %}
+                        by <i>{{ ad.owner }}</i> |
+                    {% endif %}
+                </p>
+            </li>
         {% endfor %}
         </ul>
 
