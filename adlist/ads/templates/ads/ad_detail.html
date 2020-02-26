@@ -4,18 +4,116 @@
 
 {% block content %}
     <span style="float: end;">
-        (created at: {{ ad.created_at|naturaltime }} | updated at: {{ ad.updated_at|naturaltime }})
-        {% if ad.owner == user %}
-            <a href="{% url 'ads:update' ad.id %}"><i class="fa fa-pencil"></i></a>
-            <a href="{% url 'ads:delete' ad.id %}"><i class="fa fa-trash"></i></a>
-        {% else %}
-            owned by <i>{{ ad.owner }}</i>
-        {% endif %}
+        <p class="text-muted">
+            created <i>{{ ad.created_at|naturaltime }}</i> |
+            updated <i>{{ ad.updated_at|naturaltime }}</i> |
+
+{#            edit or delete for owner #}
+            {% if ad.owner == user %}
+                by <i>me</i> |
+                <a href="{% url 'ads:update' ad.id %}"><i class="fa fa-pencil"></i></a> |
+                <a href="{% url 'ads:delete' ad.id %}"><i class="fa fa-trash"></i></a> |
+            {% else %}
+                by <i>{{ ad.owner }}</i> |
+            {% endif %}
+
+{#            favorite if login #}
+            {% if user.is_authenticated %}
+                <!-- Two hrefs with two stacked icons each - one showing and one hidden -->
+                <a href="#" onclick="favAd('{% url 'ads:ad_unfavorite' ad.id %}', {{ ad.id }});return false;"
+                    {% if ad.id not in favorites %} style="display: none;" {% endif %}
+                    id="favorite_star_{{ad.id}}"
+                >
+                    <span class="fa-stack" style="vertical-align: middle;">
+                        <i class="fa fa-star fa-stack-1x" style="color: orange;"></i>
+                        <i class="fa fa-star-o fa-stack-1x"></i>
+                    </span>
+                </a>
+                <!-- the second href -->
+                <a href="#" onclick="favAd('{% url 'ads:ad_favorite' ad.id %}', {{ ad.id }} );return false;"
+                    {% if ad.id in favorites %} style="display: none;" {% endif %}
+                    id="unfavorite_star_{{ad.id}}"
+                >
+                    <span class="fa-stack" style="vertical-align: middle;">
+                        <i class="fa fa-star fa-stack-1x" style="display: none; color: orange;"></i>
+                        <i class="fa fa-star-o fa-stack-1x"></i>
+                    </span>
+                </a>
+            {% endif %}
+        </p>
     </span>
 
+{#    Content #}
     <h1>{{ ad.title }}</h1>
+
+    {% if ad.content_type %}
+        <div class="container" >
+            <img style="float: end; max-width: 50%; align-content: center" src="{% url 'ads:ad_picture' ad.id %}" alt="">
+        </div>
+    {% endif %}
+
+    <br>
     <p>{{ ad.price }}</p>
     <p>{{ ad.text }}</p>
 
-{#    <p><a href="{% url 'ads:index' %}">All ads</a></p>#}
+{#    comment text box to submit #}
+    <br>
+    <hr>
+    <div class="container">
+        {% if user.is_authenticated %}
+            <br clear="all">
+            {% load crispy_forms_tags %}
+            <form method="post" action="{% url 'ads:comment_create' ad.id %}">
+                {% csrf_token %}
+                {{ comment_form|crispy }}
+                <input type="submit" value="Submit">
+                <input type="submit" value="Back to Ads List" onclick="window.location.href='{% url 'ads:index' %}'; return false;">
+            </form>
+        {% endif %}
+    </div>
+
+{#    comments list #}
+    <br>
+    {% for comment in comments %}
+        <hr>
+        <div class="container">
+            <p>{{ comment.text }}</p>
+            <p class="small text-muted">
+                created <i>{{ comment.created_at|naturaltime }}</i> |
+                updated <i>{{ comment.updated_at|naturaltime }}</i> |
+                {% if user == comment.owner %}
+                    by <i>me</i> |
+                    <a href="{% url 'ads:comment_delete' comment.id %}"><i class="fa fa-trash"></i></a>
+                {% else %}
+                    by <i>{{ comment.owner }}</i>
+                {% endif %}
+            </p>
+        </div>
+    {% endfor %}
+    <hr>
+
+    <div class="container">
+        <br>
+        <p><a href="{% url 'ads:index' %}">Back to Ads List</a></p>
+    </div>
+
+    <br>
+
+{#    for favorite #}
+    <script>
+        function favAd(url, ad_id) {
+            console.log('Requesting JSON');
+            $.post(
+                url, {}, function(rows){
+                    console.log(url, 'finished');
+                    $("#unfavorite_star_"+ad_id).toggle();
+                    $("#favorite_star_"+ad_id).toggle();
+                }
+            ).fail(
+                function(xhr) {
+                    alert('Url failed with '+xhr.status+' '+url);
+                }
+            );
+        }
+    </script>
 {% endblock content %}

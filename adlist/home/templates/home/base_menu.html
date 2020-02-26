@@ -14,7 +14,7 @@
         <ul class="nav navbar-nav">
           {% url 'ads' as ads %}
           <li {% if request.get_full_path == ads %}class="active"{% endif %}>
-              <a href="{% url 'ads:index' %}">All Ads</a></li>
+              <a href="{% url 'ads:index' %}">Ads List</a></li>
         </ul>
 
         <ul class="nav navbar-nav navbar-right">
